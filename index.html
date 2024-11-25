@@ -19,6 +19,32 @@
       overflow-x: hidden;
     }
 
+    /* Scrolling Announcement */
+    .announcement-bar {
+      width: 100%;
+      background: #3b82f6;
+      color: white;
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .announcement-text {
+      display: inline-block;
+      font-size: 1.2rem;
+      animation: scroll-text 10s linear infinite;
+    }
+
+    @keyframes scroll-text {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
     /* Hero Section */
     .hero {
       display: flex;
@@ -126,9 +152,14 @@
   </style>
 </head>
 <body>
+  <!-- Scrolling Announcement -->
+  <div class="announcement-bar">
+    <div class="announcement-text" id="announcement-text"></div>
+  </div>
+
   <div class="hero">
-    <h1 class="app-title">SH TOUR APP</h1>
-    <p class="subtitle">PLAY LUDO TOURNAMENT ON OUR APP AND EARN REAL CASH.</p>
+    <h1 class="app-title">SH TOUR</h1>
+    <p class="subtitle">Download And Play Ludo For Lost Real Cash.</p>
 
     <!-- Download Buttons -->
     <div class="download-buttons">
@@ -149,7 +180,7 @@
         <p>Total Users</p>
       </div>
       <div class="stat-item">
-        <h3>1,500,000+ BDT</h3>
+        <h3>7,5000+ BDT</h3>
         <p>Total Funds</p>
       </div>
     </div>
@@ -159,5 +190,28 @@
   <footer>
     <p>Developed by <a href="https://t.me/genarel_admin" target="_blank">SH SHARIAR</a></p>
   </footer>
+
+  <script>
+    // Random Announcement Data
+    const announcements = [
+      "Riad মাত্র মারা খেলো 1500 BDT!",
+      "Rakib মাত্র মারা খেলো 2000 BDT!",
+      "Shariar just won 3000 BDT!",
+      "Ahmed just won 1000 BDT!",
+      "Nusrat just won 2500 BDT!"
+    ];
+
+    // Function to Update Announcement
+    function updateAnnouncement() {
+      const announcementText = document.getElementById("announcement-text");
+      setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * announcements.length);
+        announcementText.innerText = announcements[randomIndex];
+      }, 2000); // Update every 5 seconds
+    }
+
+    // Initialize Announcement
+    updateAnnouncement();
+  </script>
 </body>
-</html>
+          </html>
