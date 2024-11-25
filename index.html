@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Party</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+      animation: fadeIn 2s ease;
+    }
+
+    /* Animation for Body Fade In */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Title Section */
+    .title-section {
+      text-align: center;
+      padding: 20px 0;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-title {
+      font-size: 48px;
+      font-weight: bold;
+      margin: 0;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+      animation: fadeInTitle 1.5s ease-in-out;
+    }
+
+    .sub-title {
+      font-size: 24px;
+      margin: 10px 0 0;
+      font-weight: 600;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes fadeInTitle {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Container Layout */
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 20px;
+      max-width: 900px;
+      margin: 20px auto;
+    }
+
+    /* Box Styles */
+    .name-box {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .name-box:hover {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+      color: #0072ff;
+    }
+
+    .name-box:hover .icon {
+      transform: scale(1.2);
+      color: #fff;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    /* Teacher Box Enhanced Styling */
+    .teacher-box {
+      background: linear-gradient(135deg, #f9f9f9, #e3f2fd);
+      border: 3px solid #4facfe;
+      border-radius: 20px 5px 20px 5px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.4s ease, background 0.4s ease;
+    }
+
+    .teacher-box:hover {
+      transform: scale(1.1);
+      background: linear-gradient(135deg, #0072ff, #00f2fe);
+      color: white;
+    }
+
+    /* Footer Animation */
+    .footer {
+      text-align: center;
+      margin: 40px 0 20px;
+      font-size: 32px;
+      font-weight: bold;
+      color: #0072ff;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Title Section -->
+  <div class="title-section">
+    <div class="main-title">CLASS PARTY</div>
+    <div class="sub-title">Section H</div>
+  </div>
+
+  <!-- Teachers Section -->
+  <div class="teacher-section">
+    <div class="section-title" style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #333;">
+      Teachers
+    </div>
+    <div class="container">
+      <div class="name-box teacher-box">
+        <div class="icon">👨‍🏫</div>
+        Sadman Anik
+        <div class="label">Teacher</div>
+      </div>
+      <div class="name-box teacher-box">
+        <div class="icon">👨‍🏫</div>
+        Hanif
+        <div class="label">Teacher</div>
+      </div>
+      <div class="name-box teacher-box">
+        <div class="icon">👨‍🏫</div>
+        Mofazzel
+        <div class="label">Teacher</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Students Section -->
+  <div class="student-section">
+    <div class="section-title" style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #333;">
+      Students
+    </div>
+    <div class="container">
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Shariar
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Supto
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Shuvo
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Ayon
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Jubayer
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Turab
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Abir
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Neon
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Shihab
+        <div class="label">Student</div>
+      </div>
+      <div class="name-box">
+        <div class="icon">🎓</div>
+        Sakin
+        <div class="label">Student</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Message -->
+  <div class="footer">Happy Class Party 2024!</div>
+</body>
+</html>
