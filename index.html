@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>App Download Page</title>
+  <title>SH TOUR</title>
   <style>
     /* General Reset */
     * {
@@ -27,33 +27,30 @@
       position: relative;
       border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
-    .slider-container img {
+    .slider {
+      display: flex;
+      animation: slide 10s infinite ease-in-out;
+    }
+
+    .slider img {
       width: 100%;
       display: block;
       border-radius: 15px;
       transition: transform 0.5s ease;
     }
 
-    /* Lighting Effect */
-    .slider-container img:hover {
+    .slider img:hover {
       transform: scale(1.05);
-      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
-    }
-
-    /* Animation */
-    .slider {
-      display: flex;
-      animation: slide 12s infinite;
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.7);
     }
 
     @keyframes slide {
-      0%, 20% { transform: translateX(0); }
-      25%, 45% { transform: translateX(-100%); }
-      50%, 70% { transform: translateX(-200%); }
-      75%, 100% { transform: translateX(-300%); }
+      0%, 25% { transform: translateX(0); }
+      30%, 55% { transform: translateX(-100%); }
+      60%, 100% { transform: translateX(-200%); }
     }
 
     /* Download Section */
@@ -70,6 +67,12 @@
       background: linear-gradient(90deg, #06b6d4, #3b82f6, #9333ea);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #3b82f6, 0 0 20px #9333ea; }
+      100% { text-shadow: 0 0 20px #06b6d4, 0 0 30px #3b82f6; }
     }
 
     .download-section p {
@@ -78,7 +81,6 @@
       margin-bottom: 30px;
     }
 
-    /* Download Buttons */
     .download-buttons {
       display: flex;
       justify-content: center;
@@ -98,16 +100,69 @@
       gap: 10px;
       box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: btn-glow 2s infinite alternate;
+    }
+
+    @keyframes btn-glow {
+      0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+      100% { box-shadow: 0 0 25px rgba(59, 130, 246, 0.8); }
     }
 
     .btn:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
     }
 
     .btn img {
       width: 24px;
       height: 24px;
+    }
+
+    /* Statistics Section */
+    .stats-section {
+      text-align: center;
+      margin: 30px auto;
+      padding: 20px 0;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      animation: fade-in 2s ease-in-out;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stat-item {
+      display: inline-block;
+      margin: 15px;
+      text-align: center;
+      animation: glow 2s infinite alternate;
+    }
+
+    .stat-icon {
+      font-size: 3rem;
+      color: #3b82f6;
+      margin-bottom: 10px;
+      animation: icon-glow 3s infinite alternate;
+    }
+
+    @keyframes icon-glow {
+      0% { text-shadow: 0 0 10px #3b82f6; }
+      100% { text-shadow: 0 0 20px #9333ea; }
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #06b6d4;
+    }
+
+    .stat-title {
+      font-size: 1.2rem;
+      color: #cbd5e1;
     }
 
     /* Footer */
@@ -116,9 +171,6 @@
       padding: 15px 0;
       font-size: 1rem;
       background-color: #0f172a;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
       color: #94a3b8;
     }
 
@@ -137,24 +189,37 @@
   <div class="slider-container">
     <div class="slider">
       <img src="https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2FScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpg?alt=media&token=2443981e-a585-4e60-8ac4-bf76c3608da7" alt="Slide 1">
-      <img src="https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2FScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpg?alt=media&token=2443981e-a585-4e60-8ac4-bf76c3608da7" alt="Slide 2">
-      <img src="https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2FScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpg?alt=media&token=2443981e-a585-4e60-8ac4-bf76c3608da7" alt="Slide 3">
+      <img src="https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2Fmaxresdefault%20(1).jpgmaxresdefault%20(1).jpg?alt=media&token=2f6292e9-81ae-4b18-b26d-d2aaa2db6b7a" alt="Slide 2">
     </div>
   </div>
 
   <!-- Download Section -->
   <div class="download-section">
     <h1>SH TOUR!</h1>
-    <p>PLAY GAMES AND EARN REAL CASH DAILY! ITS POSSIBLE</p>
+    <p>EARN REAL CASH BY PLAYING GAMES</p>
     <div class="download-buttons">
       <a href="https://your-firebase-link.com/app.apk" class="btn">
         <img src="https://cdn-icons-png.flaticon.com/512/888/888857.png" alt="Android">
-        Download for Android
+        Download
       </a>
       <a href="https://your-firebase-link.com/app.ios" class="btn">
         <img src="https://cdn-icons-png.flaticon.com/512/888/888841.png" alt="iOS">
-        Download for iOS
+        Download
       </a>
+    </div>
+  </div>
+
+  <!-- Statistics Section -->
+  <div class="stats-section">
+    <div class="stat-item">
+      <div class="stat-icon">👥</div>
+      <div class="stat-number">10,500+</div>
+      <div class="stat-title">Total Users</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">💰</div>
+      <div class="stat-number">1,500,000+ BDT</div>
+      <div class="stat-title">Total Funds</div>
     </div>
   </div>
 
@@ -163,4 +228,4 @@
     <p>Developed by <a href="https://t.me/genarel_admin" target="_blank">SH SHARIAR</a></p>
   </footer>
 </body>
-        </html>
+</html>
