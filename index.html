@@ -19,44 +19,51 @@
       overflow-x: hidden;
     }
 
-    /* Scrolling Announcement */
-    .announcement-bar {
-      width: 100%;
-      background: #3b82f6;
-      color: white;
-      padding: 10px 0;
+    /* Slider Section */
+    .slider-container {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      position: relative;
+      border-radius: 15px;
       overflow: hidden;
-      white-space: nowrap;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
 
-    .announcement-text {
-      display: inline-block;
-      font-size: 1.2rem;
-      animation: scroll-text 10s linear infinite;
+    .slider-container img {
+      width: 100%;
+      display: block;
+      border-radius: 15px;
+      transition: transform 0.5s ease;
     }
 
-    @keyframes scroll-text {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
+    /* Lighting Effect */
+    .slider-container img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
     }
 
-    /* Hero Section */
-    .hero {
+    /* Animation */
+    .slider {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      animation: slide 12s infinite;
+    }
+
+    @keyframes slide {
+      0%, 20% { transform: translateX(0); }
+      25%, 45% { transform: translateX(-100%); }
+      50%, 70% { transform: translateX(-200%); }
+      75%, 100% { transform: translateX(-300%); }
+    }
+
+    /* Download Section */
+    .download-section {
       text-align: center;
-      height: 100vh;
+      margin: 30px auto;
       padding: 20px;
     }
 
-    .app-title {
+    .download-section h1 {
       font-size: 2.5rem;
       font-weight: bold;
       margin-bottom: 20px;
@@ -65,10 +72,10 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .subtitle {
+    .download-section p {
       font-size: 1.2rem;
-      margin-bottom: 30px;
       color: #cbd5e1;
+      margin-bottom: 30px;
     }
 
     /* Download Buttons */
@@ -98,35 +105,9 @@
       box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
     }
 
-    .btn:active {
-      transform: scale(0.95);
-    }
-
     .btn img {
       width: 24px;
       height: 24px;
-    }
-
-    /* Stats Section */
-    .stats {
-      display: flex;
-      justify-content: center;
-      margin-top: 40px;
-      gap: 50px;
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-item h3 {
-      font-size: 1.8rem;
-      color: #06b6d4;
-    }
-
-    .stat-item p {
-      font-size: 1rem;
-      color: #cbd5e1;
     }
 
     /* Footer */
@@ -152,16 +133,19 @@
   </style>
 </head>
 <body>
-  <!-- Scrolling Announcement -->
-  <div class="announcement-bar">
-    <div class="announcement-text" id="announcement-text"></div>
+  <!-- Image Slider -->
+  <div class="slider-container">
+    <div class="slider">
+      <img src="https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2FScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpg?alt=media&token=2443981e-a585-4e60-8ac4-bf76c3608da7" alt="Slide 1">
+      <img src="https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2FScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpg?alt=media&token=2443981e-a585-4e60-8ac4-bf76c3608da7" alt="Slide 2">
+      <img src="https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2FScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpgScreenshot_20240508-183911_Telegram.jpg?alt=media&token=2443981e-a585-4e60-8ac4-bf76c3608da7" alt="Slide 3">
+    </div>
   </div>
 
-  <div class="hero">
-    <h1 class="app-title">SH TOUR</h1>
-    <p class="subtitle">DOWNLOAD AND PLAY TOURNAMENT’S FOR EARN REAL CASH.</p>
-
-    <!-- Download Buttons -->
+  <!-- Download Section -->
+  <div class="download-section">
+    <h1>SH TOUR!</h1>
+    <p>PLAY GAMES AND EARN REAL CASH DAILY! ITS POSSIBLE</p>
     <div class="download-buttons">
       <a href="https://your-firebase-link.com/app.apk" class="btn">
         <img src="https://cdn-icons-png.flaticon.com/512/888/888857.png" alt="Android">
@@ -172,46 +156,11 @@
         Download for iOS
       </a>
     </div>
-
-    <!-- Statistics -->
-    <div class="stats">
-      <div class="stat-item">
-        <h3>10,500+</h3>
-        <p>Total Users</p>
-      </div>
-      <div class="stat-item">
-        <h3>7,5000+ BDT</h3>
-        <p>Total Funds</p>
-      </div>
-    </div>
   </div>
 
   <!-- Footer -->
   <footer>
     <p>Developed by <a href="https://t.me/genarel_admin" target="_blank">SH SHARIAR</a></p>
   </footer>
-
-  <script>
-    // Random Announcement Data
-    const announcements = [
-      "Riad মাত্র মারা খেলো 1500 BDT!",
-      "Rakib মাত্র মারা খেলো 2000 BDT!",
-      "Shariar just won 3000 BDT!",
-      "Ahmed just won 1000 BDT!",
-      "Nusrat just won 2500 BDT!"
-    ];
-
-    // Function to Update Announcement
-    function updateAnnouncement() {
-      const announcementText = document.getElementById("announcement-text");
-      setInterval(() => {
-        const randomIndex = Math.floor(Math.random() * announcements.length);
-        announcementText.innerText = announcements[randomIndex];
-      }, 2000); // Update every 5 seconds
-    }
-
-    // Initialize Announcement
-    updateAnnouncement();
-  </script>
 </body>
-          </html>
+        </html>
