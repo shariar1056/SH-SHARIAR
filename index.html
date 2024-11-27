@@ -91,6 +91,10 @@
     .chat-footer button:hover {
       background-color: #45a049;
     }
+
+    .chat-footer input:invalid {
+      border-color: red;
+    }
   </style>
 </head>
 <body>
@@ -102,7 +106,7 @@
       <!-- Messages will appear here -->
     </div>
     <div class="chat-footer">
-      <input type="text" id="messageInput" placeholder="Type a message...">
+      <input type="text" id="messageInput" placeholder="Type a message..." required>
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
@@ -111,6 +115,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js"></script>
   <script>
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyATZy2b-coVpQXizXgo4RdBJ4RUwNv0kRY",
       authDomain: "shariar-44c38.firebaseapp.com",
@@ -131,22 +136,27 @@
     function sendMessage() {
       const messageInput = document.getElementById('messageInput');
       const messageContent = messageInput.value.trim();
-      if (messageContent) {
-        const messageData = {
-          sender: userId,
-          message: messageContent,
-          timestamp: Date.now(),
-        };
 
-        // Save message to Firebase
-        db.ref('messages').push(messageData)
-          .then(() => {
-            messageInput.value = ''; // Clear the input field
-          })
-          .catch(error => {
-            console.error("Error sending message:", error);
-          });
+      // Check if input is empty
+      if (messageContent === "") {
+        alert("Please enter a message.");
+        return;
       }
+
+      const messageData = {
+        sender: userId,
+        message: messageContent,
+        timestamp: Date.now(),
+      };
+
+      // Save message to Firebase
+      db.ref('messages').push(messageData)
+        .then(() => {
+          messageInput.value = ''; // Clear the input field
+        })
+        .catch(error => {
+          console.error("Error sending message:", error);
+        });
     }
 
     // Add message to UI
