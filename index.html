@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Real-Time Chat</title>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -35,7 +37,7 @@
       background-color: #f9f9f9;
     }
     .message {
-      margin-bottom: 10px;
+      margin: 5px 0;
       padding: 10px;
       border-radius: 10px;
       max-width: 70%;
@@ -77,7 +79,7 @@
 <body>
 
 <div class="chat-container">
-  <div class="header">Global Real-Time Chat</div>
+  <div class="header">Global Chat</div>
   <div id="chat-box" class="chat-box"></div>
   <div class="input-container">
     <input id="message-input" class="message-input" type="text" placeholder="Type a message...">
@@ -86,59 +88,65 @@
 </div>
 
 <script>
-  // WebSocket Server URL (Free WebSocket Echo Server)
-  const socket = new WebSocket('wss://echo.websocket.events/');
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBx3-y-a9KOdbXqCm_xDlZYJXD4zi4twKc",
+    authDomain: "shopzy12-4be37.firebaseapp.com",
+    databaseURL: "https://shopzy12-4be37-default-rtdb.firebaseio.com/",
+    projectId: "shopzy12-4be37",
+    storageBucket: "shopzy12-4be37.appspot.com",
+    messagingSenderId: "1081129739506",
+    appId: "1:1081129739506:android:4c426c94550021c2c49c6b",
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
   // DOM Elements
   const chatBox = document.getElementById('chat-box');
   const messageInput = document.getElementById('message-input');
   const sendButton = document.getElementById('send-btn');
 
+  // Unique User ID (Randomized for Each User)
+  const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
+
   // Function to Add Message to Chat Box
   function addMessage(content, sender) {
     const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message', sender === "You" ? "sent" : "received");
+    messageDiv.classList.add('message', sender === userId ? "sent" : "received");
     messageDiv.textContent = content;
     chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
   }
+
+  // Listening to Messages in Realtime
+  firebase.database().ref('messages').on('child_added', function(snapshot) {
+    const data = snapshot.val();
+    addMessage(data.message, data.sender);
+  });
 
   // Sending Message
   function sendMessage() {
     const messageContent = messageInput.value.trim();
     if (messageContent) {
-      addMessage(messageContent, "You"); // Show Message Locally
-      socket.send(messageContent); // Send Message to WebSocket Server
-      messageInput.value = ''; // Clear Input Field
+      const messageData = {
+        sender: userId,
+        message: messageContent,
+        timestamp: Date.now(),
+      };
+      firebase.database().ref('messages').push(messageData); // Save to Firebase
+      messageInput.value = ''; // Clear input
     }
   }
 
-  // Receiving Message
-  socket.onmessage = function(event) {
-    addMessage(event.data, "Stranger"); // Show Received Message
-  };
-
   // Event Listeners
   sendButton.addEventListener('click', sendMessage);
-
   messageInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
       sendMessage();
     }
   });
-
-  // WebSocket Connection Status
-  socket.onopen = function() {
-    console.log('Connected to WebSocket server');
-  };
-
-  socket.onerror = function(error) {
-    console.error('WebSocket error:', error);
-  };
-
-  socket.onclose = function() {
-    console.log('Disconnected from WebSocket server');
-  };
 </script>
 
 </body>
