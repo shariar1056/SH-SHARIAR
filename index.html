@@ -3,305 +3,325 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>X-O Game with Ads</title>
+  <title>Plane Shooting Game</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 100vh;
       margin: 0;
-      background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #000;
     }
 
-    h1 {
-      color: #333;
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    #balance {
-      font-size: 1.5rem;
-      color: #444;
-    }
-
-    #game-board {
-      display: grid;
-      grid-template-columns: repeat(3, 120px);
-      grid-gap: 10px;
-      margin: 20px 0;
-    }
-
-    .cell {
-      width: 120px;
-      height: 120px;
-      background: white;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      color: #555;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: transform 0.3s ease-in-out, background 0.3s;
-    }
-
-    .cell:hover {
-      transform: scale(1.05);
-    }
-
-    .cell.taken {
-      pointer-events: none;
-    }
-
-    .cell.winning {
-      background: #74c69d;
-      color: white;
-      animation: glow 1s infinite alternate;
-    }
-
-    @keyframes glow {
-      from {
-        box-shadow: 0 0 10px #74c69d;
-      }
-      to {
-        box-shadow: 0 0 20px #74c69d;
-      }
-    }
-
-    #status {
-      font-size: 1.3rem;
-      color: #222;
-      margin: 15px 0;
-    }
-
-    #reset {
-      padding: 10px 20px;
-      font-size: 1rem;
-      color: white;
-      background: #219ebc;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    #reset:hover {
-      background: #023047;
-    }
-
-    /* Popup Styles */
-    #popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      text-align: center;
-      z-index: 1000;
-    }
-
-    #popup h2 {
-      font-size: 1.5rem;
-      color: #333;
-    }
-
-    #popup p {
-      font-size: 1rem;
-      color: #555;
-      margin: 10px 0;
-    }
-
-    #popup button {
-      padding: 10px 15px;
-      font-size: 1rem;
-      color: white;
-      background: #74c69d;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    #popup button:hover {
-      background: #52b788;
-    }
-
-    #popup-overlay {
-      display: none;
-      position: fixed;
+    /* Menu Bar Styles */
+    #menu {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 999;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    #menu h1 {
+      font-size: 48px;
+      margin-bottom: 30px;
+    }
+
+    #menu button {
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #menu button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Game Area Styles */
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background-color: skyblue;
+      overflow: hidden;
+    }
+
+    #playerPlane {
+      position: absolute;
+      bottom: 150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 80px;
+      background: url('https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F31-315953_2d-spaceship-png-spaceship-sprite-free.png31-315953_2d-spaceship-png-spaceship-sprite-free.png?alt=media&token=f658474c-8f85-42b3-bb08-f2fdba9f51cb') no-repeat center;
+      background-size: contain;
+    }
+
+    .enemyPlane {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .enemy1 {
+      background-image: url('https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F1734168349417.png1734168349417.png?alt=media&token=f61a94e6-99e3-43ac-933c-2744fdc22458');
+    }
+
+    .enemy2 {
+      background-image: url('https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F1734168227967.png1734168227967.png?alt=media&token=3c83a59d-d8a8-4ae9-9726-57a8e099eda8');
+    }
+
+    .enemyBullet {
+      position: absolute;
+      background-color: red;
+      width: 6px;
+      height: 15px;
+      border-radius: 2px;
+      animation: enemyBulletMove 3s linear forwards;
+    }
+
+    @keyframes enemyBulletMove {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(100vh);
+      }
+    }
+
+    .bullet {
+      position: absolute;
+      background-color: white;
+      width: 5px;
+      height: 20px;
+      border-radius: 2px;
+      animation: bulletMove 1s linear forwards;
+    }
+
+    @keyframes bulletMove {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-100vh);
+      }
+    }
+
+    #scoreBoard {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      font-size: 20px;
     }
   </style>
-  <script src="//niphaumeenses.net/vignette.min.js" data-zone="8591296" data-sdk="show_8591296"></script>
 </head>
 <body>
-  <h1>X-O Game (Player vs Bot)</h1>
-  <p id="balance">Your Points: <span id="points">0</span></p>
-  <div id="game-board">
-    <div class="cell" data-index="0"></div>
-    <div class="cell" data-index="1"></div>
-    <div class="cell" data-index="2"></div>
-    <div class="cell" data-index="3"></div>
-    <div class="cell" data-index="4"></div>
-    <div class="cell" data-index="5"></div>
-    <div class="cell" data-index="6"></div>
-    <div class="cell" data-index="7"></div>
-    <div class="cell" data-index="8"></div>
+  <!-- Menu Bar -->
+  <div id="menu">
+    <h1>Plane Shooting Game</h1>
+    <button id="startButton">Start Game</button>
   </div>
-  <p id="status"></p>
-  <button id="reset">Reset Game</button>
 
-  <!-- Popup -->
-  <div id="popup-overlay"></div>
-  <div id="popup">
-    <h2 id="popup-title"></h2>
-    <p>Congratulations! Claim your points by clicking below:</p>
-    <button id="claim-points">Claim Points</button>
+  <!-- Game Area -->
+  <div id="gameArea" style="display: none;">
+    <div id="playerPlane"></div>
+    <div id="scoreBoard">Score: 0 | Lives: 3</div>
   </div>
+
+  <!-- Monetag Ads Script -->
+  <script src="//niphaumeenses.net/vignette.min.js" data-zone="8574478" data-sdk="show_8574478"></script>
 
   <script>
-    const board = document.querySelectorAll(".cell");
-    const statusText = document.getElementById("status");
-    const resetButton = document.getElementById("reset");
-    const pointsDisplay = document.getElementById("points");
-    const popup = document.getElementById("popup");
-    const popupOverlay = document.getElementById("popup-overlay");
-    const popupTitle = document.getElementById("popup-title");
-    const claimButton = document.getElementById("claim-points");
+    const menu = document.getElementById("menu");
+    const gameArea = document.getElementById("gameArea");
+    const playerPlane = document.getElementById("playerPlane");
+    const scoreBoard = document.getElementById("scoreBoard");
+    const startButton = document.getElementById("startButton");
 
-    const balanceKey = "xo_game_points";
+    let bullets = [];
+    let enemies = [];
+    let enemyBullets = [];
+    let score = 0;
+    let lives = 3;
 
-    let currentPlayer = "X";
-    let gameActive = true;
-
-    const winningConditions = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-
-    let gameState = ["", "", "", "", "", "", "", "", ""];
-    let points = loadPoints();
-
-    pointsDisplay.textContent = points;
-
-    board.forEach((cell) => {
-      cell.addEventListener("click", () => {
-        if (!gameActive || cell.textContent !== "") return;
-        playerMove(cell);
-        if (gameActive) botMove();
-      });
+    // Start Game Function
+    startButton.addEventListener("click", () => {
+      menu.style.display = "none"; // Hide the menu
+      gameArea.style.display = "block"; // Show the game area
+      showAd();  // Show ad when the game starts
+      startGame(); // Start the game
     });
 
-    resetButton.addEventListener("click", resetGame);
-    claimButton.addEventListener("click", claimPoints);
-
-    function playerMove(cell) {
-      const index = cell.getAttribute("data-index");
-      if (gameState[index] === "") {
-        gameState[index] = "X";
-        cell.textContent = "X";
-        cell.classList.add("taken");
-        checkResult();
-      }
+    function startGame() {
+      setInterval(createEnemy, 2000); // Create enemies
+      requestAnimationFrame(gameLoop); // Start game loop
     }
 
-    function botMove() {
-      const emptyCells = gameState
-        .map((value, index) => (value === "" ? index : null))
-        .filter((index) => index !== null);
-
-      if (emptyCells.length > 0) {
-        const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-        gameState[randomIndex] = "O";
-        board[randomIndex].textContent = "O";
-        board[randomIndex].classList.add("taken");
-        checkResult();
-      }
+    // Show Ad Function
+    function showAd() {
+      // Show Monetag ad when the game starts
+      const adScript = document.createElement('script');
+      adScript.src = "//niphaumeenses.net/vignette.min.js";
+      adScript.setAttribute('data-zone', '8574478');
+      adScript.setAttribute('data-sdk', 'show_8574478');
+      document.body.appendChild(adScript);
     }
 
-    function checkResult() {
-      let roundWon = false;
+    // Touch Controls
+    let touchStartX = 0;
+    gameArea.addEventListener("touchstart", (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
 
-      for (let condition of winningConditions) {
-        const [a, b, c] = condition;
-        if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
-          roundWon = true;
-          highlightWinner(condition);
-          break;
-        }
-      }
+    gameArea.addEventListener("touchmove", (e) => {
+      const touchX = e.touches[0].clientX;
+      const deltaX = touchX - touchStartX;
+      const newLeft = Math.min(
+        Math.max(0, playerPlane.offsetLeft + deltaX),
+        gameArea.offsetWidth - playerPlane.offsetWidth
+      );
+      playerPlane.style.left = newLeft + "px";
+      touchStartX = touchX;
+    });
 
-      if (roundWon) {
-        if (currentPlayer === "X") {
-          points += 10;
-          savePoints(points);
-          pointsDisplay.textContent = points;
-        }
-        showPopup(`${currentPlayer} Wins!`);
-        gameActive = false;
-      } else if (!gameState.includes("")) {
-        statusText.textContent = "It's a Draw!";
-        gameActive = false;
-      } else {
-        currentPlayer = currentPlayer === "X" ? "O" : "X";
-      }
-    }
+    gameArea.addEventListener("touchend", () => {
+      shootBullet();
+    });
 
-    function highlightWinner(winningCondition) {
-      winningCondition.forEach((index) => {
-        board[index].classList.add("winning");
+    function shootBullet() {
+      const bullet = document.createElement("div");
+      bullet.classList.add("bullet");
+      const playerRect = playerPlane.getBoundingClientRect();
+      bullet.style.left = playerRect.left + playerRect.width / 2 - 2.5 + "px";
+      bullet.style.bottom = window.innerHeight - playerRect.top + "px";
+      gameArea.appendChild(bullet);
+      bullets.push(bullet);
+
+      bullet.addEventListener("animationend", () => {
+        bullet.remove();
+        bullets = bullets.filter((b) => b !== bullet);
       });
+    }
+
+    function createEnemy() {
+      const enemy = document.createElement("div");
+      const enemyType = Math.random() < 0.8 ? "enemy1" : "enemy2";
+      enemy.classList.add("enemyPlane", enemyType);
+
+      enemy.style.left = Math.random() * (gameArea.offsetWidth - 80) + "px";
+      enemy.style.top = "-80px";
+      gameArea.appendChild(enemy);
+      enemies.push(enemy);
+
+      const interval = setInterval(() => {
+        const currentTop = parseInt(enemy.style.top);
+        if (currentTop > gameArea.offsetHeight) {
+          enemy.remove();
+          enemies = enemies.filter((e) => e !== enemy);
+          clearInterval(interval);
+        } else {
+          enemy.style.top = currentTop + 5 + "px";
+        }
+      }, 50);
+
+      if (enemyType === "enemy2") {
+        setTimeout(() => shootEnemyBullet(enemy), 2000);
+      }
+    }
+
+    function shootEnemyBullet(enemy) {
+      const enemyBullet = document.createElement("div");
+      enemyBullet.classList.add("enemyBullet");
+      const enemyRect = enemy.getBoundingClientRect();
+      enemyBullet.style.left = enemyRect.left + enemyRect.width / 2 - 2.5 + "px";
+      enemyBullet.style.top = enemyRect.top + enemyRect.height + "px";
+      gameArea.appendChild(enemyBullet);
+      enemyBullets.push(enemyBullet);
+
+      enemyBullet.addEventListener("animationend", () => {
+        enemyBullet.remove();
+        enemyBullets = enemyBullets.filter((eb) => eb !== enemyBullet);
+      });
+    }
+
+    function updateGame() {
+      bullets.forEach((bullet, bIndex) => {
+        enemies.forEach((enemy, eIndex) => {
+          if (isColliding(bullet, enemy)) {
+            bullet.remove();
+            enemy.remove();
+            bullets.splice(bIndex, 1);
+            enemies.splice(eIndex, 1);
+            score++;
+            updateScoreBoard();
+          }
+        });
+      });
+
+      enemyBullets.forEach((enemyBullet, ebIndex) => {
+        if (isColliding(enemyBullet, playerPlane)) {
+          enemyBullet.remove();
+          enemyBullets.splice(ebIndex, 1);
+          loseLife();
+        }
+      });
+    }
+
+    function loseLife() {
+      lives--;
+      updateScoreBoard();
+      if (lives <= 0) {
+        alert("Game Over! Your Score: " + score);
+        showAd();  // Show ad when the game is over
+        resetGame();
+      }
+    }
+
+    function updateScoreBoard() {
+      scoreBoard.textContent = `Score: ${score} | Lives: ${lives}`;
     }
 
     function resetGame() {
-      gameState = ["", "", "", "", "", "", "", "", ""];
-      currentPlayer = "X";
-      gameActive = true;
-      statusText.textContent = "";
-      board.forEach((cell) => {
-        cell.textContent = "";
-        cell.classList.remove("taken", "winning");
-      });
+      score = 0;
+      lives = 3;
+      enemies.forEach((enemy) => enemy.remove());
+      bullets.forEach((bullet) => bullet.remove());
+      enemyBullets.forEach((enemyBullet) => enemyBullet.remove());
+      enemies = [];
+      bullets = [];
+      enemyBullets = [];
+      updateScoreBoard();
     }
 
-    function loadPoints() {
-      return parseInt(localStorage.getItem(balanceKey)) || 0;
+    function isColliding(obj1, obj2) {
+      const rect1 = obj1.getBoundingClientRect();
+      const rect2 = obj2.getBoundingClientRect();
+      return !(
+        rect1.top > rect2.bottom ||
+        rect1.bottom < rect2.top ||
+        rect1.left > rect2.right ||
+        rect1.right < rect2.left
+      );
     }
 
-    function savePoints(points) {
-      localStorage.setItem(balanceKey, points);
-    }
-
-    function showPopup(message) {
-      popupTitle.textContent = message;
-      popup.style.display = "block";
-      popupOverlay.style.display = "block";
-    }
-
-    function claimPoints() {
-      popup.style.display = "none";
-      popupOverlay.style.display = "none";
-      // Show Monetag Ad
-      window.show_8591296();
+    function gameLoop() {
+      updateGame();
+      requestAnimationFrame(gameLoop);
     }
   </script>
 </body>
