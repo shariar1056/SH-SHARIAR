@@ -42,6 +42,7 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s;
+      margin-bottom: 10px;
     }
 
     #menu button:hover {
@@ -55,6 +56,7 @@
       height: 100vh;
       background-color: skyblue;
       overflow: hidden;
+      display: none;
     }
 
     #playerPlane {
@@ -135,10 +137,11 @@
   <div id="menu">
     <h1>Plane Shooting Game</h1>
     <button id="startButton">Start Game</button>
+    <button id="rewardButton">Get Reward (Show Ad)</button>
   </div>
 
   <!-- Game Area -->
-  <div id="gameArea" style="display: none;">
+  <div id="gameArea">
     <div id="playerPlane"></div>
     <div id="scoreBoard">Score: 0 | Lives: 3</div>
   </div>
@@ -152,6 +155,7 @@
     const playerPlane = document.getElementById("playerPlane");
     const scoreBoard = document.getElementById("scoreBoard");
     const startButton = document.getElementById("startButton");
+    const rewardButton = document.getElementById("rewardButton");
 
     let bullets = [];
     let enemies = [];
@@ -159,27 +163,33 @@
     let score = 0;
     let lives = 3;
 
-    // Start Game Function
-    startButton.addEventListener("click", () => {
-      menu.style.display = "none"; // Hide the menu
-      gameArea.style.display = "block"; // Show the game area
-      showAd();  // Show ad when the game starts
-      startGame(); // Start the game
-    });
-
-    function startGame() {
-      setInterval(createEnemy, 2000); // Create enemies
-      requestAnimationFrame(gameLoop); // Start game loop
-    }
-
-    // Show Ad Function
+    // Show Ad before game start
     function showAd() {
-      // Show Monetag ad when the game starts
       const adScript = document.createElement('script');
       adScript.src = "//niphaumeenses.net/vignette.min.js";
       adScript.setAttribute('data-zone', '8574478');
       adScript.setAttribute('data-sdk', 'show_8574478');
       document.body.appendChild(adScript);
+    }
+
+    // Show Ad when Reward Button is clicked
+    rewardButton.addEventListener("click", () => {
+      showAd();  // Show ad when reward button is clicked
+    });
+
+    // Start Game Function
+    startButton.addEventListener("click", () => {
+      showAd();  // Show ad before the game starts
+      setTimeout(() => {
+        menu.style.display = "none"; // Hide the menu
+        gameArea.style.display = "block"; // Show the game area
+        startGame(); // Start the game after ad finishes
+      }, 3000); // Wait for 3 seconds before starting the game (adjust as needed)
+    });
+
+    function startGame() {
+      setInterval(createEnemy, 2000); // Create enemies
+      requestAnimationFrame(gameLoop); // Start game loop
     }
 
     // Touch Controls
