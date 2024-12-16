@@ -165,11 +165,11 @@
 
     // Show Ad before game start
     function showAd() {
-      const adScript = document.createElement('script');
-      adScript.src = "//niphaumeenses.net/vignette.min.js";
-      adScript.setAttribute('data-zone', '8574478');
-      adScript.setAttribute('data-sdk', 'show_8574478');
-      document.body.appendChild(adScript);
+      if (typeof Moneta !== 'undefined' && Moneta.show) {
+        Moneta.show('8574478'); // Trigger Monetag Ads
+      } else {
+        console.log('Monetag Ads not loaded yet');
+      }
     }
 
     // Show Ad when Reward Button is clicked
