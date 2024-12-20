@@ -3,335 +3,300 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plane Shooting Game</title>
+  <title>Tappy Hero</title>
   <style>
-    body {
+    * {
       margin: 0;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background-color: #000;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* Menu Bar Styles */
-    #menu {
-      position: absolute;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #6a11cb, #2575fc);
+      color: white;
+      overflow: hidden;
+    }
+
+    /* Loading Page Style */
+    #loading {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 100;
+      height: 100%;
+      background: url('https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2FIMG-20241220-WA0007.jpgIMG-20241220-WA0007.jpg?alt=media&token=9b14144a-f752-4979-a451-70d058d98541') no-repeat center center/cover;
+      z-index: 9999;
     }
 
-    #menu h1 {
-      font-size: 48px;
-      margin-bottom: 30px;
-    }
-
-    #menu button {
-      padding: 15px 30px;
-      font-size: 20px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      margin-bottom: 10px;
-    }
-
-    #menu button:hover {
-      background-color: #0056b3;
-    }
-
-    /* Game Area Styles */
-    #gameArea {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      background-color: skyblue;
-      overflow: hidden;
+    body.loaded #loading {
       display: none;
     }
 
-    #playerPlane {
+    /* Balance Bar */
+    #balance-bar {
+      background: #111;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    #balance-bar span {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    #balance-bar img {
+      width: 25px;
+      height: 25px;
+      margin-right: 5px;
+    }
+
+    /* Game Screen */
+    #game-screen {
+      display: none;
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle, #1e3c72, #2a5298);
+    }
+
+    #game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: rgba(0, 0, 0, 0.5);
       position: absolute;
-      bottom: 150px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 80px;
-      background: url('https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F31-315953_2d-spaceship-png-spaceship-sprite-free.png31-315953_2d-spaceship-png-spaceship-sprite-free.png?alt=media&token=f658474c-8f85-42b3-bb08-f2fdba9f51cb') no-repeat center;
-      background-size: contain;
+      top: 0;
+      width: 100%;
+      z-index: 10;
     }
 
-    .enemyPlane {
+    #timer, #score {
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: #000;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .monster, .bomb {
       position: absolute;
-      width: 80px;
-      height: 80px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
+      cursor: pointer;
+      animation: spawn-animation 0.5s ease-in-out;
     }
 
-    .enemy1 {
-      background-image: url('https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F1734168349417.png1734168349417.png?alt=media&token=f61a94e6-99e3-43ac-933c-2744fdc22458');
+    .monster img, .bomb img {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
     }
 
-    .enemy2 {
-      background-image: url('https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F1734168227967.png1734168227967.png?alt=media&token=3c83a59d-d8a8-4ae9-9726-57a8e099eda8');
-    }
-
-    .enemyBullet {
+    .score-text {
       position: absolute;
-      background-color: red;
-      width: 6px;
-      height: 15px;
-      border-radius: 2px;
-      animation: enemyBulletMove 3s linear forwards;
-    }
-
-    @keyframes enemyBulletMove {
-      from {
-        transform: translateY(0);
-      }
-      to {
-        transform: translateY(100vh);
-      }
-    }
-
-    .bullet {
-      position: absolute;
-      background-color: white;
-      width: 5px;
-      height: 20px;
-      border-radius: 2px;
-      animation: bulletMove 1s linear forwards;
-    }
-
-    @keyframes bulletMove {
-      from {
-        transform: translateY(0);
-      }
-      to {
-        transform: translateY(-100vh);
-      }
-    }
-
-    #scoreBoard {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      color: white;
       font-size: 20px;
+      font-weight: bold;
+      color: yellow;
+      animation: float-up 1s ease-in-out forwards;
+    }
+
+    @keyframes spawn-animation {
+      0% {
+        transform: scale(0);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes float-up {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+    }
+
+    /* Game Over Screen */
+    #game-over {
+      display: none;
+      height: 100vh;
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    #game-over h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    #game-over p {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+
+    #game-over button {
+      padding: 15px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: #2575fc;
+      color: white;
+      cursor: pointer;
+    }
+
+    #game-over button:hover {
+      background: #6a11cb;
     }
   </style>
 </head>
 <body>
-  <!-- Menu Bar -->
-  <div id="menu">
-    <h1>Plane Shooting Game</h1>
-    <button id="startButton">Start Game</button>
-    <button id="rewardButton">Get Reward (Show Ad)</button>
+  <!-- Loading Screen -->
+  <div id="loading"></div>
+
+  <!-- Balance Bar -->
+  <div id="balance-bar">
+    <span><img src="https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2Fcoin_PNG36871.pngcoin_PNG36871.png?alt=media&token=c23b3e02-6798-4bd6-9cb9-b12ccd150387" alt="Coin"> Balance: <span id="balance">0</span></span>
   </div>
 
-  <!-- Game Area -->
-  <div id="gameArea">
-    <div id="playerPlane"></div>
-    <div id="scoreBoard">Score: 0 | Lives: 3</div>
+  <!-- Game Screen -->
+  <div id="game-screen">
+    <div id="game-header">
+      <div id="timer">Time: 60</div>
+      <div id="score">Score: 0</div>
+    </div>
   </div>
 
-  <!-- Monetag Ads Script -->
-  <script src="//niphaumeenses.net/vignette.min.js" data-zone="8574478" data-sdk="show_8574478"></script>
+  <!-- Game Over Screen -->
+  <div id="game-over">
+    <h1>Game Over</h1>
+    <p>Your Score: <span id="final-score">0</span></p>
+    <button onclick="returnToHome()">Return to Home</button>
+  </div>
 
   <script>
-    const menu = document.getElementById("menu");
-    const gameArea = document.getElementById("gameArea");
-    const playerPlane = document.getElementById("playerPlane");
-    const scoreBoard = document.getElementById("scoreBoard");
-    const startButton = document.getElementById("startButton");
-    const rewardButton = document.getElementById("rewardButton");
+    // Show loading screen for 7 seconds and then start the game
+    setTimeout(() => {
+      document.body.classList.add('loaded'); // Hide loading screen
+      startGame(); // Start the game after loading screen is hidden
+    }, 7000);
 
-    let bullets = [];
-    let enemies = [];
-    let enemyBullets = [];
+    const balanceElement = document.getElementById('balance');
+    let balance = parseInt(localStorage.getItem('balance')) || 0;
+    balanceElement.textContent = balance;
+
+    const gameScreen = document.getElementById('game-screen');
+    const timerElement = document.getElementById('timer');
+    const scoreElement = document.getElementById('score');
+    const gameOverScreen = document.getElementById('game-over');
+    const finalScoreElement = document.getElementById('final-score');
+
     let score = 0;
-    let lives = 3;
-
-    // Show Ad before game start
-    function showAd() {
-      if (typeof Moneta !== 'undefined' && Moneta.show) {
-        Moneta.show('8574478'); // Trigger Monetag Ads
-      } else {
-        console.log('Monetag Ads not loaded yet');
-      }
-    }
-
-    // Show Ad when Reward Button is clicked
-    rewardButton.addEventListener("click", () => {
-      showAd();  // Show ad when reward button is clicked
-    });
-
-    // Start Game Function
-    startButton.addEventListener("click", () => {
-      showAd();  // Show ad before the game starts
-      setTimeout(() => {
-        menu.style.display = "none"; // Hide the menu
-        gameArea.style.display = "block"; // Show the game area
-        startGame(); // Start the game after ad finishes
-      }, 3000); // Wait for 3 seconds before starting the game (adjust as needed)
-    });
+    let timeLeft = 60;
+    let timerInterval, spawnInterval;
 
     function startGame() {
-      setInterval(createEnemy, 2000); // Create enemies
-      requestAnimationFrame(gameLoop); // Start game loop
-    }
-
-    // Touch Controls
-    let touchStartX = 0;
-    gameArea.addEventListener("touchstart", (e) => {
-      touchStartX = e.touches[0].clientX;
-    });
-
-    gameArea.addEventListener("touchmove", (e) => {
-      const touchX = e.touches[0].clientX;
-      const deltaX = touchX - touchStartX;
-      const newLeft = Math.min(
-        Math.max(0, playerPlane.offsetLeft + deltaX),
-        gameArea.offsetWidth - playerPlane.offsetWidth
-      );
-      playerPlane.style.left = newLeft + "px";
-      touchStartX = touchX;
-    });
-
-    gameArea.addEventListener("touchend", () => {
-      shootBullet();
-    });
-
-    function shootBullet() {
-      const bullet = document.createElement("div");
-      bullet.classList.add("bullet");
-      const playerRect = playerPlane.getBoundingClientRect();
-      bullet.style.left = playerRect.left + playerRect.width / 2 - 2.5 + "px";
-      bullet.style.bottom = window.innerHeight - playerRect.top + "px";
-      gameArea.appendChild(bullet);
-      bullets.push(bullet);
-
-      bullet.addEventListener("animationend", () => {
-        bullet.remove();
-        bullets = bullets.filter((b) => b !== bullet);
-      });
-    }
-
-    function createEnemy() {
-      const enemy = document.createElement("div");
-      const enemyType = Math.random() < 0.8 ? "enemy1" : "enemy2";
-      enemy.classList.add("enemyPlane", enemyType);
-
-      enemy.style.left = Math.random() * (gameArea.offsetWidth - 80) + "px";
-      enemy.style.top = "-80px";
-      gameArea.appendChild(enemy);
-      enemies.push(enemy);
-
-      const interval = setInterval(() => {
-        const currentTop = parseInt(enemy.style.top);
-        if (currentTop > gameArea.offsetHeight) {
-          enemy.remove();
-          enemies = enemies.filter((e) => e !== enemy);
-          clearInterval(interval);
-        } else {
-          enemy.style.top = currentTop + 5 + "px";
-        }
-      }, 50);
-
-      if (enemyType === "enemy2") {
-        setTimeout(() => shootEnemyBullet(enemy), 2000);
-      }
-    }
-
-    function shootEnemyBullet(enemy) {
-      const enemyBullet = document.createElement("div");
-      enemyBullet.classList.add("enemyBullet");
-      const enemyRect = enemy.getBoundingClientRect();
-      enemyBullet.style.left = enemyRect.left + enemyRect.width / 2 - 2.5 + "px";
-      enemyBullet.style.top = enemyRect.top + enemyRect.height + "px";
-      gameArea.appendChild(enemyBullet);
-      enemyBullets.push(enemyBullet);
-
-      enemyBullet.addEventListener("animationend", () => {
-        enemyBullet.remove();
-        enemyBullets = enemyBullets.filter((eb) => eb !== enemyBullet);
-      });
-    }
-
-    function updateGame() {
-      bullets.forEach((bullet, bIndex) => {
-        enemies.forEach((enemy, eIndex) => {
-          if (isColliding(bullet, enemy)) {
-            bullet.remove();
-            enemy.remove();
-            bullets.splice(bIndex, 1);
-            enemies.splice(eIndex, 1);
-            score++;
-            updateScoreBoard();
-          }
-        });
-      });
-
-      enemyBullets.forEach((enemyBullet, ebIndex) => {
-        if (isColliding(enemyBullet, playerPlane)) {
-          enemyBullet.remove();
-          enemyBullets.splice(ebIndex, 1);
-          loseLife();
-        }
-      });
-    }
-
-    function loseLife() {
-      lives--;
-      updateScoreBoard();
-      if (lives <= 0) {
-        alert("Game Over! Your Score: " + score);
-        showAd();  // Show ad when the game is over
-        resetGame();
-      }
-    }
-
-    function updateScoreBoard() {
-      scoreBoard.textContent = `Score: ${score} | Lives: ${lives}`;
-    }
-
-    function resetGame() {
+      gameScreen.style.display = 'block';
+      gameOverScreen.style.display = 'none';
       score = 0;
-      lives = 3;
-      enemies.forEach((enemy) => enemy.remove());
-      bullets.forEach((bullet) => bullet.remove());
-      enemyBullets.forEach((enemyBullet) => enemyBullet.remove());
-      enemies = [];
-      bullets = [];
-      enemyBullets = [];
-      updateScoreBoard();
+      timeLeft = 60;
+      scoreElement.textContent = `Score: ${score}`;
+      timerElement.textContent = `Time: ${timeLeft}`;
+      startTimer();
+      spawnEntities();
     }
 
-    function isColliding(obj1, obj2) {
-      const rect1 = obj1.getBoundingClientRect();
-      const rect2 = obj2.getBoundingClientRect();
-      return !(
-        rect1.top > rect2.bottom ||
-        rect1.bottom < rect2.top ||
-        rect1.left > rect2.right ||
-        rect1.right < rect2.left
-      );
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = `Time: ${timeLeft}`;
+        if (timeLeft === 0) {
+          endGame();
+        }
+      }, 1000);
     }
 
-    function gameLoop() {
-      updateGame();
-      requestAnimationFrame(gameLoop);
+    function spawnEntities() {
+      spawnInterval = setInterval(() => {
+        const entity = document.createElement('div');
+        const type = Math.random() > 0.3 ? 'monster' : 'bomb';
+        const img = document.createElement('img');
+        entity.classList.add(type);
+
+        if (type === 'monster') {
+          img.src = Math.random() > 0.5
+            ? 'https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F_70df2103-0def-4a07-9d5c-65a614b47944.png_70df2103-0def-4a07-9d5c-65a614b47944.png?alt=media&token=a6b628f3-4775-49a0-9c4b-ab455b9001a9'
+            : 'https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F_6ce392e6-dd30-4841-93be-1728d9aea5dd.png_6ce392e6-dd30-4841-93be-1728d9aea5dd.png?alt=media&token=64e02ade-4c85-49eb-aff0-375bafed4595';
+          img.alt = 'Monster';
+        } else {
+          img.src = 'https://firebasestorage.googleapis.com/v0/b/cash-56e18.appspot.com/o/icon%2F_299a9d01-157e-4a91-9cc7-b01a46e2e3b8.png_299a9d01-157e-4a91-9cc7-b01a46e2e3b8.png?alt=media&token=bf210869-714c-4d57-89b5-31bff3821eb2';
+          img.alt = 'Bomb';
+        }
+
+        entity.style.left = Math.random() * 90 + '%';
+        entity.style.top = Math.random() * 90 + '%';
+        entity.appendChild(img);
+
+        entity.addEventListener('click', () => {
+          if (type === 'monster') {
+            score += 5;
+            scoreElement.textContent = `Score: ${score}`;
+
+            // Show floating text animation for score
+            showFloatingText(entity, `+5`);
+          } else {
+            endGame();
+          }
+
+          navigator.vibrate?.(100);
+          entity.remove();
+        });
+
+        gameScreen.appendChild(entity);
+
+        setTimeout(() => entity.remove(), 3000);
+      }, 500);
+    }
+
+    function showFloatingText(entity, text) {
+      const floatingText = document.createElement('div');
+      floatingText.classList.add('score-text');
+      floatingText.textContent = text;
+
+      const { left, top } = entity.getBoundingClientRect();
+      floatingText.style.left = `${left}px`;
+      floatingText.style.top = `${top}px`;
+
+      gameScreen.appendChild(floatingText);
+
+      setTimeout(() => floatingText.remove(), 1000);
+    }
+
+    function endGame() {
+      clearInterval(timerInterval);
+      clearInterval(spawnInterval);
+      gameScreen.style.display = 'none';
+      gameOverScreen.style.display = 'block';
+      finalScoreElement.textContent = score;
+      balance += score;
+      localStorage.setItem('balance', balance);
+      balanceElement.textContent = balance;
+    }
+
+    function returnToHome() {
+      gameOverScreen.style.display = 'none';
+      gameScreen.style.display = 'none';
+      startGame();
     }
   </script>
 </body>
