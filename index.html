@@ -301,15 +301,41 @@
           startGame(); // Restart game after ad
         },
         onClose: () => {
-          alert("Please complete the ad to return home!");
-          returnToHome(); // Reopen ad if closed before completion
+          // Show Interstitial Ads if Reward Ad is not available
+          sad.showAd('int-6442', "interstitial", {
+            onClose: () => {
+              alert("Returning to home.");
+              gameOverScreen.style.display = 'none';
+              gameScreen.style.display = 'none';
+              startGame();
+            },
+            onError: (error) => {
+              console.error("Ad Error:", error);
+              alert("Failed to load ad. Please check your internet connection.");
+              gameOverScreen.style.display = 'none';
+              gameScreen.style.display = 'none';
+              startGame(); // Skip ad and start new game on error
+            }
+          });
         },
         onError: (error) => {
           console.error("Ad Error:", error);
           alert("Failed to load ad. Please check your internet connection.");
-          gameOverScreen.style.display = 'none';
-          gameScreen.style.display = 'none';
-          startGame(); // Skip ad and start new game on error
+          sad.showAd('int-6442', "interstitial", {
+            onClose: () => {
+              alert("Returning to home.");
+              gameOverScreen.style.display = 'none';
+              gameScreen.style.display = 'none';
+              startGame();
+            },
+            onError: (error) => {
+              console.error("Ad Error:", error);
+              alert("Failed to load ad. Please check your internet connection.");
+              gameOverScreen.style.display = 'none';
+              gameScreen.style.display = 'none';
+              startGame(); // Skip ad and start new game on error
+            }
+          });
         }
       });
     }
