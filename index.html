@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tappy Hero</title>
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script> <!-- Adsgram Library -->
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to bottom, #6a11cb, #2575fc);
@@ -294,9 +294,24 @@
     }
 
     function returnToHome() {
-      gameOverScreen.style.display = 'none';
-      gameScreen.style.display = 'none';
-      startGame();
+      sad.showAd('6441', "reward", {
+        onReward: () => {
+          gameOverScreen.style.display = 'none';
+          gameScreen.style.display = 'none';
+          startGame(); // Restart game after ad
+        },
+        onClose: () => {
+          alert("Please complete the ad to return home!");
+          returnToHome(); // Reopen ad if closed before completion
+        },
+        onError: (error) => {
+          console.error("Ad Error:", error);
+          alert("Failed to load ad. Please check your internet connection.");
+          gameOverScreen.style.display = 'none';
+          gameScreen.style.display = 'none';
+          startGame(); // Skip ad and start new game on error
+        }
+      });
     }
   </script>
 </body>
